@@ -7,12 +7,14 @@ from fashionstar_uart_sdk.uart_pocket_handler import (
 )
 
 class FashionstarRobot():
-    def __init__(self,joint_ids:Sequence[int],gripper_config:Tuple[int, float, float],port:str,baudrate:int):
+    def __init__(self,
+                joint_ids:Sequence[int],
+                gripper_config:Tuple[int, float, float],
+                port:str,
+                baudrate:int):
         self._gripper_id,self._gripper_range_min,self._gripper_range_max = gripper_config
         
-        self._portHandler = PortHandler(port,baudrate)
         self._id_to_name = {}
-
         if gripper_config == (0,0.0,0.0):
             self._servo_ids = tuple(joint_ids)
             for index ,servo_id in enumerate(self._servo_ids):
@@ -24,7 +26,9 @@ class FashionstarRobot():
                     self._id_to_name[f'gripper'] = servo_id
                 else:
                     self._id_to_name[f'joint_{index}'] = servo_id
-
+        
+        print(f"attempting to connect to port: {port}")
+        self._portHandler = PortHandler(port,baudrate)
 
 
 
